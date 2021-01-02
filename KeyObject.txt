@@ -1,0 +1,64 @@
+package bgd;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.WritableComparable;
+
+public class KeyObject implements WritableComparable<KeyObject> {
+
+	private Text category, location;
+	
+	public KeyObject() {
+		this.category= new Text();
+		this.location= new Text();
+	}
+	
+	public KeyObject(Text category,Text location) {
+		this.category=category;
+		this.location=location;
+	}
+	
+	public void set(Text category,Text location) {
+		this.category=category;
+		this.location=location;
+	}
+	
+	public Text getcat() {
+		return category;
+		
+	}
+	
+	public Text getloc() {
+		return location;
+	}
+	
+	public void readFields(DataInput in) throws IOException {
+		category.readFields(in);
+		location.readFields(in);
+	}
+	
+	public void write(DataOutput out) throws IOException {
+		category.write(out);
+		location.write(out);
+	}
+	
+	public int compareTo(KeyObject o) {
+		if(category.compareTo(o.category)==0) {
+			return (location.compareTo(o.location));
+		}
+		else return (category.compareTo(o.category));
+	}
+	
+	public boolean equals(Object o) {
+		if(o instanceof KeyObject) {
+			KeyObject other = (KeyObject) o;
+			return category.equals(other.category)&& location.equals(other.location);
+		}
+		return false;
+	}
+	
+}
+
